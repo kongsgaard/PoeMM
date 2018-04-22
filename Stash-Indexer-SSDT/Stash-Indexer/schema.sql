@@ -1,0 +1,5 @@
+﻿CREATE SCHEMA [fct]
+GO;
+
+CREATE SCHEMA [dim]
+
