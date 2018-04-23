@@ -16,22 +16,23 @@ namespace Stash_Indexer_netcore
 
         static void Main(string[] args)
         {
-            log4net.GlobalContext.Properties["TransactionLogFileName"] = DataDir + "\\Logs\\TransactionLog";
-            log4net.GlobalContext.Properties["ErrorLogFileName"] = DataDir + "\\Logs\\ErrorLog";
+            log4net.GlobalContext.Properties["TransactionLogFileName"] = DataDir + "Logs\\TransactionLog";
+            log4net.GlobalContext.Properties["ErrorLogFileName"] = DataDir + "Logs\\ErrorLog";
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
-            Console.WriteLine("Squash2!");
-            Console.WriteLine("Squash2!!");
-
             StashApiRequester apiRequester = new StashApiRequester(DataDir);
             apiRequester.InitializeFromCheckpoint();
-            
+
+            ConsoleMonitor monitor = new ConsoleMonitor(apiRequester, 500);
+
+            Task tsk1 = new Task(monitor.StartConsoleMonitor);
             Task tsk = new Task(apiRequester.StartRequesting);
-            
+
+            tsk1.Start();
             tsk.Start();
             
-             tsk.Wait();
+            tsk.Wait();
 
             
             Console.WriteLine("Done");

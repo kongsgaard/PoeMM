@@ -25,8 +25,8 @@ namespace Stash_Indexer_netcore
          * next_change_id=111929789-117354395-110061941-127008893-118581490
          * 
          */
-        
-        
+
+        public event EventHandler<ApiRequestDoneArgs> RequestDone;        
 
         //private ILoggerRepository logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
         private static readonly log4net.ILog errorLog = log4net.LogManager.GetLogger(LogManager.GetRepository(Assembly.GetEntryAssembly()).Name, "ErrorLogger");
@@ -35,6 +35,7 @@ namespace Stash_Indexer_netcore
         private static string _checkpointFileName = "checkpoint.json";
         private static string _apiEndpoint = "http://www.pathofexile.com/api/public-stash-tabs?id=";
 
+        private Stopwatch _requestDelay = new Stopwatch();
 
         private string _directoryPath { get; set; }
         private bool _useCached { get; set; }
@@ -50,6 +51,7 @@ namespace Stash_Indexer_netcore
         {
             _directoryPath = directoryPath;
             _useCached = useCached;
+            _requestDelay.Start();
         }
 
         public void InitializeFromCheckpoint()
@@ -110,16 +112,20 @@ namespace Stash_Indexer_netcore
                 webRequest.Headers.Add("Accept-Encoding", "gzip,deflate");
 
                 transactionLog.Info("Requesting: " + changeId);
-                Console.WriteLine("Requesting: " + changeId);
-
+                
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
+
+                if(_requestDelay.Elapsed.Milliseconds < 500) {
+                    System.Threading.Thread.Sleep(500 - _requestDelay.Elapsed.Milliseconds);
+                }
+                _requestDelay.Restart();
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                
                 TimeSpan ts = watch.Elapsed;
                 string elapsedTime = String.Format("{0:00}s {1:00}ms", ts.Seconds,ts.Milliseconds);
                 transactionLog.Info("Done in: " + elapsedTime);
-                Console.WriteLine("Done in: " + elapsedTime);
-
+                
                 using (Stream stream = webResponse.GetResponseStream())
                 using (FileStream file = File.Create(cachedFilePath)) {
 
@@ -132,17 +138,22 @@ namespace Stash_Indexer_netcore
                         decompFile = ReadFully(decompStream);
                     }
                 }
+
+                RequestDone.Invoke(this, new ApiRequestDoneArgs(_nextChangeId, ts.Seconds * 1000 + ts.Milliseconds, false, new FileInfo(cachedFilePath).Length));
             }
             else {
 
                 transactionLog.Info(changeId + " already exists");
 
+                RequestDone.Invoke(this, new ApiRequestDoneArgs(_nextChangeId, 0, true, new FileInfo(cachedFilePath).Length));
+
                 using (FileStream file = new FileStream(cachedFilePath,FileMode.Open, FileAccess.Read))
                 using (GZipStream decompStream = new GZipStream(file, CompressionMode.Decompress)) {
+                    
                     try {
                         decompFile = ReadFully(decompStream);
                     }
-                    catch (Exception e) {
+                    catch {
                         if (redownload) {
                             errorLog.Info("Redownload of " + changeId + " failed. Terminating program.");
                             Environment.Exit(0);
@@ -163,7 +174,7 @@ namespace Stash_Indexer_netcore
             return JObject.Parse(jsonTxt);
         }
 
-        private static string CachedFilePath(string dir, string changeId) { return dir + "files/" + changeId + ".gz"; }
+        private static string CachedFilePath(string dir, string changeId) { return dir + "\\files\\" + changeId + ".gz"; }
         private static byte[] ReadFully(Stream stream, int bufferSize=32768) {
             byte[] buffer = new byte[bufferSize];
             using (MemoryStream ms = new MemoryStream()) {
@@ -174,6 +185,21 @@ namespace Stash_Indexer_netcore
                     ms.Write(buffer, 0, read);
                 }
             }
+        }
+    }
+
+    public class ApiRequestDoneArgs : EventArgs
+    {
+        public string _changeId { get; }
+        public int _requestTimeMs { get; }
+        public bool _cached { get; }
+        public long _fileBytes { get; }
+
+        public ApiRequestDoneArgs(string changeId, int requestTimeMs, bool cached, long fileBytes) {
+            _changeId = changeId;
+            _requestTimeMs = requestTimeMs;
+            _cached = cached;
+            _fileBytes = fileBytes;
         }
     }
 }
