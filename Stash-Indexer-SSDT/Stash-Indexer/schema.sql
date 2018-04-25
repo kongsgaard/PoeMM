@@ -2,4 +2,6 @@
 GO;
 
 CREATE SCHEMA [dim]
+GO;
 
+CREATE SCHEMA [ext]

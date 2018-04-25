@@ -1,6 +1,6 @@
-﻿CREATE TABLE [dim].[Stash]
+﻿CREATE TABLE [ext].[Stash]
 (
-	[DW_SK_Stash]	INT NOT NULL PRIMARY KEY,
+	[FromFilePath]	Nvarchar(256) NOT NULL,
 	[StashID]		Nvarchar(64) NOT NULL,
 	[League]		Nvarchar(64) NOT NULL,
 	[Type]			Nvarchar(64) NOT NULL,

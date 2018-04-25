@@ -60,11 +60,15 @@
     <Folder Include="Tables" />
     <Folder Include="Tables\fct" />
     <Folder Include="Tables\dim" />
+    <Folder Include="Tables\ext" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="schema.sql" />
     <Build Include="Tables\fct\ApiRequest.sql" />
     <Build Include="Tables\fct\StashChange.sql" />
     <Build Include="Tables\dim\Stash.sql" />
+    <Build Include="Tables\ext\ApiRequest.sql" />
+    <Build Include="Tables\ext\StashChange.sql" />
+    <Build Include="Tables\ext\Stash.sql" />
   </ItemGroup>
 </Project>
