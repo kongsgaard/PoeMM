@@ -6,20 +6,31 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.IO.Compression;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace Stash_Automater_Planner
 {
     public static class ApiToolBox
     {
-        public static JObject GetStashes(string stashConfig)
+        public static JObject GetStashes(string stashConfig, int tabIndex=-1)
         {
             byte[] decompFile = null;
 
+            IConfiguration Configuration = BuildJsonConfiguration(stashConfig);
 
-            Cookie cookie = new Cookie("POESESSID", "SESSID", "/", ".pathofexile.com");
+
+            Cookie cookie = new Cookie("POESESSID", $"{Configuration["POESESSID"]}", "/", ".pathofexile.com");
             Cookie cookie1 = new Cookie("stored_data", "1", "/", ".pathofexile.com");
-            
-            string _apiEndpoint = "https://www.pathofexile.com/character-window/get-stash-items?league=Hardcore&accountName=sundess888&tabs=1&tabIndex=1";
+
+            string para = "";
+            if(tabIndex > 0) {
+                para = "&tabIndex=" + tabIndex.ToString();
+            }
+            else {
+                para = "&tabs=1";
+            }
+            string _apiEndpoint = $"https://www.pathofexile.com/character-window/get-stash-items?league={Configuration["league"]}&accountName={Configuration["account"]}" + para;
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(_apiEndpoint);
             CookieContainer cont = new CookieContainer();
@@ -56,6 +67,15 @@ namespace Stash_Automater_Planner
                     ms.Write(buffer, 0, read);
                 }
             }
+        }
+
+        public static IConfiguration BuildJsonConfiguration(string jsonFile)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(jsonFile);
+            return builder.Build();
+
         }
     }
 }

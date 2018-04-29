@@ -7,7 +7,7 @@ namespace Stash_Automater_Planner
     {
         static void Main(string[] args)
         {
-            JObject ob = ApiToolBox.GetStashes("");
+            JObject ob = ApiToolBox.GetStashes("StashConfig.json");
             int k = 0;
         }
     }
