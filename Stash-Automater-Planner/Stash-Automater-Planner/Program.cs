@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Stash_Automater_Planner
 {
@@ -7,7 +8,9 @@ namespace Stash_Automater_Planner
     {
         static void Main(string[] args)
         {
-            JObject ob = ApiToolBox.GetStashes("StashConfig.json");
+            string ob = ApiToolBox.GetStashes("StashConfig.json").ToString();
+
+            ApiRequest req = JsonConvert.DeserializeObject<ApiRequest>(ob);
             int k = 0;
         }
     }
