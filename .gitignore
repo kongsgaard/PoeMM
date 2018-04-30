@@ -5,7 +5,7 @@
 
 # Configuration file
 Stash-Indexer-netcore/Stash-Indexer-netcore/AppSettings.json
-
+Stash-Automater-Planner/Stash-Automater-Planner/StashConfig.json
 
 # User-specific files
 *.suo
