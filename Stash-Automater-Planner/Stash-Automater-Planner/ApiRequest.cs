@@ -11,7 +11,9 @@ namespace Stash_Automater_Planner
         public int numTabs { get; set; }
 
         [JsonProperty("tabs")]
-        List<StashTab> stashTabs { get; set; }
+        public List<StashTab> stashTabs { get; set; }
 
+        [JsonProperty("items")]
+        public List<Item> items { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Stash_Automater_Planner
         bool abyssJewel { get; set; }
 
         [JsonProperty("additionalProperties")]
-        List<Property> properties { get; set; }
+        List<Property> additionalProperties { get; set; }
 
         [JsonProperty("category")]
         Category category { get; set; }
@@ -44,28 +44,28 @@ namespace Stash_Automater_Planner
         List<string> flavourText { get; set; }
 
         [JsonProperty("frameType")]
-        int frameType { get; set; }
+        public int frameType { get; set; }
 
         [JsonProperty("h")]
-        int height { get; set; }
+        public int height { get; set; }
 
         [JsonProperty("icon")]
         string iconUrl { get; set; }
 
         [JsonProperty("id")]
-        string id { get; set; }
+        public string id { get; set; }
 
         [JsonProperty("identified")]
-        bool identified { get; set; }
+        public bool identified { get; set; }
 
         [JsonProperty("ilvl")]
-        int ilvl { get; set; }
+        public int ilvl { get; set; }
 
         [JsonProperty("implicitMods")]
         List<string> implicitMods { get; set; }
 
         [JsonProperty("inventoryId")]
-        string inventoryId { get; set; }
+        public string inventoryId { get; set; }
 
         [JsonProperty("isRelic")]
         bool isRelic { get; set; }
@@ -85,21 +85,61 @@ namespace Stash_Automater_Planner
         [JsonProperty("nextLevelRequierments")]
         List<Property> nextLevelReqs { get; set; }
 
+        [JsonProperty("note")]
+        string note { get; set; }
 
-    [JsonProperty("w")]
-        int width { get; set; }
+        [JsonProperty("properties")]
+        List<Property> properties { get; set; }
 
+        [JsonProperty("prophecyDiffText")]
+        string prophecyDiffText { get; set; }
 
+        [JsonProperty("prophecyText")]
+        string prophecyText { get; set; }
 
+        [JsonProperty("requirements")]
+        List<Property> requirements { get; set; }
 
-        
+        [JsonProperty("secDescrText")]
+        string secDescrText { get; set; }
 
-        
+        [JsonProperty("shaper")]
+        bool shaper { get; set; }
+
+        [JsonProperty("socketedItems")]
+        List<Item> socketedItems { get; set; }
+
+        [JsonProperty("sockets")]
+        List<Socket> sockets { get; set; }
+
+        [JsonProperty("stackSize")]
+        int stackSize { get; set; }
+
+        [JsonProperty("support")]
+        bool support { get; set; }
+
+        [JsonProperty("talismanTier")]
+        int talismanTier { get; set; }
+
         [JsonProperty("typeLine")]
-        string typeLine { get; set; }
+        public string typeLine { get; set; }
 
+        [JsonProperty("utilityMods")]
+        List<string> utilityMods { get; set; }
 
+        [JsonProperty("verified")]
+        bool verified { get; set; }
 
+        [JsonProperty("w")]
+        public int width { get; set; }
+
+        [JsonProperty("x")]
+        public int x { get; set; }
+
+        [JsonProperty("y")]
+        public int y { get; set; }
+
+        public int targetStashIndex { get; set; }
     }
 
     public class Property
@@ -108,7 +148,7 @@ namespace Stash_Automater_Planner
         string name { get; set; }
 
         [JsonProperty("values")]
-        Tuple<string, int> width { get; set; }
+        List<List<string>> values { get; set; }
 
         [JsonProperty("displayMode")]
         int displayMode { get; set; }
@@ -117,7 +157,7 @@ namespace Stash_Automater_Planner
         int propertyType { get; set; }
 
         [JsonProperty("progress")]
-        int xpProgress { get; set; }
+        double xpProgress { get; set; }
         
     }
     
@@ -144,7 +184,8 @@ namespace Stash_Automater_Planner
         [JsonProperty("weapons")]
         List<string> weapons { get; set; }
 
-
+        [JsonProperty("accessories")]
+        List<string> accessories { get; set; }
     }
 
     public class Socket
@@ -154,36 +195,8 @@ namespace Stash_Automater_Planner
 
 
         [JsonProperty("attr")]
-        private string _attribute {
-            get { return _attribute; }
-            set {
-                switch (_attribute) {
-                    case "S":
-                        _attribute = value;
-                        type = SocketType.Str;
-                        break;
-                    case "I":
-                        _attribute = value;
-                        type = SocketType.Int;
-                        break;
-                    case "D":
-                        _attribute = value;
-                        type = SocketType.Dex;
-                        break;
-                    case "G":
-                        _attribute = value;
-                        type = SocketType.White;
-                        break;
-                    case "false":
-                        _attribute = value;
-                        type = SocketType.Abyss;
-                        break;
-                    default:
-                        new Exception("Socket type not seen!");
-                        break;
-                }
-            }
-        }
+        private string _attribute { get; set; }
+
         public SocketType type { get; set; }
     }
 
