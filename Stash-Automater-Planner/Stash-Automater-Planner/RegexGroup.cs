@@ -43,10 +43,7 @@ namespace Stash_Automater_Planner
                         return true;
                     break;
                 case "1H":
-                    if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
-                        (item.typeLine.Contains("Dagger") ||
-                        item.typeLine.Contains("One Handed Sword") ||
-                        item.typeLine.Contains("Wand")))
+                    if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 && item.height == 3 && item.width==1)
                         return true;
                     break;
                 case "Chests":
@@ -73,12 +70,13 @@ namespace Stash_Automater_Planner
                         item.typeLine.Contains(" Jacket") ||
                         item.typeLine.Contains("Crypt Armour") ||
                         item.typeLine.Contains("Bone Armour") ||
+                        item.typeLine.Contains(" Plate") ||
                         item.typeLine.Contains("Vest")))
                         return true;
                     break;
                 case "Belts":
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
-                        (item.typeLine.Contains(" Belt")))
+                        (item.typeLine.Contains(" Belt") || item.typeLine.Contains("Rustic Sash")))
                         return true;
                     break;
                 case "Rings":
