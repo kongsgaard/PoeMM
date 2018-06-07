@@ -211,6 +211,10 @@ namespace Stash_Automater_Planner
                 limit++;
             }
             writer.Close();
+
+            Console.WriteLine("Enter to start sorting");
+
+            Console.ReadLine();
             
         }
     }

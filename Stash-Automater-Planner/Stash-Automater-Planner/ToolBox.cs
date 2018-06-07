@@ -24,7 +24,7 @@ namespace Stash_Automater_Planner
             Cookie cookie1 = new Cookie("stored_data", "1", "/", ".pathofexile.com");
 
             string para = "";
-            if(tabIndex > 0) {
+            if(tabIndex >= 0) {
                 para = "&tabIndex=" + tabIndex.ToString();
             }
             else {
