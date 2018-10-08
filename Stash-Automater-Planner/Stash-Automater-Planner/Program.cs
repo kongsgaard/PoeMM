@@ -11,8 +11,17 @@ namespace Stash_Automater_Planner
             //string ob = ToolBox.GetStashes("StashConfig.json").ToString();
             //
             //ApiRequest req = JsonConvert.DeserializeObject<ApiRequest>(ob);
-            Planner p = new Planner("StashConfig.json", "cleanDropTabs");
-            
+            try {
+                Planner p = new Planner("StashConfig.json", "cleanDropTabs");
+
+                Console.ReadKey();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+
+                Console.ReadLine();
+            }
+
         }
     }
 }

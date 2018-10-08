@@ -80,7 +80,7 @@ namespace Stash_Automater_Planner
                         return true;
                     break;
                 case "Rings":
-                    if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
+                    if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 && item.width == 1 && item.height == 1 &&
                         (item.typeLine.Contains(" Ring")))
                         return true;
                     break;
@@ -107,6 +107,12 @@ namespace Stash_Automater_Planner
                 case "Essence":
                     if (
                         (item.typeLine.Contains(" Essence")))
+                        return true;
+                    break;
+                case "Fragment":
+                    if (
+                        item.typeLine.Contains("Sacrifice") || item.typeLine.Contains("Fragment") || item.typeLine.Contains(" Key") || 
+                        item.typeLine.Contains("Splinter of ") || item.typeLine.Contains("Offering to the goddess") || item.typeLine.Contains("Divine vessel"))
                         return true;
                     break;
                 case "Rest":

@@ -18,6 +18,10 @@ namespace Stash_Automater_Planner
 
         [JsonProperty("sourceTabs")]
         public List<string> sourceTabs { get; set; }
+
+        [JsonProperty("chaosRecipeTabs")]
+        public List<string> chaosRecipeTabs { get; set; }
+
     }
 
     public class TargetTab
@@ -33,5 +37,9 @@ namespace Stash_Automater_Planner
         
         [JsonProperty("order")]
         public int order { get; set; }
+
+        [JsonProperty("chaosRecipeCount")]
+        public int chaosRecipeCount { get; set; }
+
     }
 }

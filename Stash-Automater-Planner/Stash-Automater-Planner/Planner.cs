@@ -15,6 +15,7 @@ namespace Stash_Automater_Planner
 
         List<StashTab> sourceTabs = new List<StashTab>();
         List<StashTab> targetTabs = new List<StashTab>();
+        List<StashTab> chaosRecipeTabs = new List<StashTab>();
         StashTab trashTab = new StashTab();
 
         Inventory inventory;
@@ -59,6 +60,11 @@ namespace Stash_Automater_Planner
                 foreach(var tt in t.targetStashes) {
                     fetchTabs_target.Add(tt);
                 }
+            }
+
+            List<string> chaosTabs = new List<string>();
+            foreach (var t in config.chaosRecipeTabs) {
+                chaosTabs.Add(t);
             }
 
             //Initialize stashes sources
@@ -135,6 +141,8 @@ namespace Stash_Automater_Planner
 
         private void CreatePlan()
         {
+            #region Clean inventory
+            //Clean inventory
             Queue<Item> currentInventory_initial = new Queue<Item>(inventory.items.Where(x => true));
 
             Item inventItem_initial = null;
@@ -147,8 +155,10 @@ namespace Stash_Automater_Planner
                     }
                 }
             }
+            #endregion
 
-
+            #region Clean Droptabs
+            //Clean drop tabs
             List<TargetTab> sortedTargetTabs = config.targetTabs.OrderBy(x => x.order).ToList();
 
             foreach(StashTab source in sourceTabs) {
@@ -168,7 +178,16 @@ namespace Stash_Automater_Planner
 
                             Item inventItem = null;
                             while (currentInventory.TryDequeue(out inventItem)) {
-                                if (!ToolBox.MoveItem(inventory, targetTab, inventItem, moveOrganizer)) {
+                                bool inserted = false;
+
+                                foreach (StashTab chaosTab in chaosRecipeTabs) {
+                                    if(ToolBox.MoveItemToChaosRecipeTab(inventory, chaosTab, inventItem, moveOrganizer, config)) {
+                                        inserted = true;
+                                        break;
+                                    }
+                                }
+
+                                if (inserted == false && !ToolBox.MoveItem(inventory, targetTab, inventItem, moveOrganizer)) {
 
                                     //Move to trashtab if full
                                     if (!ToolBox.MoveItem(inventory, trashTab, inventItem, moveOrganizer)) {
@@ -187,7 +206,18 @@ namespace Stash_Automater_Planner
                     Queue<Item> currentInventory_final = new Queue<Item>(inventory.items.Where(x => true));
                     Item inventItem_final = null;
                     while (currentInventory_final.TryDequeue(out inventItem_final)) {
-                        if (!ToolBox.MoveItem(inventory, targetTab, inventItem_final, moveOrganizer)) {
+                        bool inserted_final = false;
+
+                        //Try moving to chaos recipe tab
+                        foreach (StashTab chaosTab in chaosRecipeTabs) {
+                            if (ToolBox.MoveItemToChaosRecipeTab(inventory, chaosTab, inventItem_final, moveOrganizer, config)) {
+                                inserted_final = true;
+                                break;
+                            }
+                        }
+
+
+                        if (inserted_final==false && !ToolBox.MoveItem(inventory, targetTab, inventItem_final, moveOrganizer)) {
 
                             if (!ToolBox.MoveItem(inventory, trashTab, inventItem_final, moveOrganizer)) {
                                 throw new Exception("No room in trash tab, terminating!");
@@ -196,6 +226,70 @@ namespace Stash_Automater_Planner
                     }
                 }
             }
+            #endregion
+
+            #region Setup chaos recipe tabs
+
+
+            List<TargetTab> chaosSourceTabsSorted = sortedTargetTabs.Where(x => x.chaosRecipeCount > 0).ToList();
+
+            foreach (TargetTab target in chaosSourceTabsSorted) {
+                StashTab targetTab = targetTabs.Single(x => target.targetStashes.Contains(x.name));
+
+                Queue<Item> matchesTarg = new Queue<Item>(targetTab.items.Where(x => ToolBox.MatchTargetTabItem(x, target)));
+
+                //Move item to inventory
+                Item currentItem = null;
+                while (matchesTarg.TryDequeue(out currentItem)) {
+                    if (!ToolBox.MoveItem(targetTab, inventory, currentItem, moveOrganizer)) {
+
+                        //Try moving to chaos recipe tab
+                        foreach (StashTab chaosTab in chaosRecipeTabs) {
+                            if (ToolBox.MoveItemToChaosRecipeTab(inventory, chaosTab, currentItem, moveOrganizer, config)) {
+                                break;
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            #endregion
+
+            #region Count item classes
+            List<TargetTab> chaosSourceTabTypes = sortedTargetTabs.Where(x => x.chaosRecipeCount > 0).ToList();
+
+            var RegenGroupsForChaosRecipe = chaosSourceTabTypes.SelectMany(x => x.regexGroups).Select(y => y).ToList();
+
+            var StashTabsWithChaosRecipeItems = chaosSourceTabTypes.SelectMany(x => x.targetStashes).Select(y => y).ToList();
+
+            StashTabsWithChaosRecipeItems.AddRange(config.sourceTabs);
+            StashTabsWithChaosRecipeItems.AddRange(config.chaosRecipeTabs);
+
+
+            Console.WriteLine("Item Counts");
+            
+            foreach(string regexGrp in RegenGroupsForChaosRecipe) {
+                int countForCurrent = 0;
+
+                foreach(string tabName in StashTabsWithChaosRecipeItems) {
+
+                    StashTab currentTab = targetTabs.Single(x => x.name == tabName);
+
+                    foreach(Item it in currentTab.items) {
+                        if(RegexGroup.MatchItem(it, regexGrp)) {
+                            countForCurrent++;
+                        }
+                        
+                    }
+
+                }
+
+                Console.WriteLine(regexGrp + ": " + countForCurrent.ToString());
+            }
+
+            #endregion
+
 
             moveOrganizer.finalize();
 
@@ -212,9 +306,7 @@ namespace Stash_Automater_Planner
             }
             writer.Close();
 
-            Console.WriteLine("Enter to start sorting");
-
-            Console.ReadLine();
+            Console.WriteLine("Total seconds to move: " + (moveOrganizer.TotalMS / 1000).ToString());
             
         }
     }
