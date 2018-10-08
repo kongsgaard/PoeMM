@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using System.Linq;
 
 namespace Stash_Automater_Planner
 {
@@ -109,6 +110,69 @@ namespace Stash_Automater_Planner
             return removed && added;
         }
 
+        public static bool MoveItemToChaosRecipeTab(ItemTab source, ItemTab target, Item item, MoveOrganizer organizer, SortConfig config) {
+            Item itemCopy = new Item();
+            itemCopy.inventoryId = item.inventoryId;
+            itemCopy.x = item.x;
+            itemCopy.y = item.y;
+            
+            if (!ControlChaosRecipeReqs(target, item, config)) {
+                return false;
+            }
+
+            bool removed = source.RemoveItem(item);
+            bool added = target.AddItem(item);
+            
+            if (added == false) {
+                //Failed add, insert item in List<Item> for source again
+                source.items.Add(item);
+            }
+            else {
+                organizer.MoveItem(source, target, itemCopy);
+            }
+
+            return removed && added;
+        }
+
+        public static bool ControlChaosRecipeReqs(ItemTab target, Item item, SortConfig config) {
+
+            var ChaosTabsSource = config.targetTabs.Where(x => x.chaosRecipeCount > 0);
+            var ChaosTabsSourceSorted = ChaosTabsSource.OrderBy(x => x.order).ToList();
+
+            foreach(TargetTab tab in ChaosTabsSourceSorted) {
+                int matchesCount = 0;
+
+                foreach(Item i in target.items) {
+                    if (MatchTargetTabItem(i, tab)) {
+                        matchesCount++;
+                    }
+                }
+
+                bool thisType = false;
+                if (MatchTargetTabItem(item, tab)) {
+                    thisType = true;
+                }
+
+                if(thisType == false) {
+                    if (matchesCount != tab.chaosRecipeCount) {
+                        return false;
+                    }
+                }
+                else {
+                    if(matchesCount >= tab.chaosRecipeCount) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+
         public static bool MatchTargetTabItem(Item item, TargetTab targetTab)
         {
             foreach(string rG in targetTab.regexGroups) {
@@ -118,7 +182,7 @@ namespace Stash_Automater_Planner
             }
             return false;
         }
-
+        
         private static byte[] ReadFully(Stream stream, int bufferSize = 32768)
         {
             byte[] buffer = new byte[bufferSize];

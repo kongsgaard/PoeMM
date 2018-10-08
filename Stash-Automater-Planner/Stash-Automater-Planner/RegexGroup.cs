@@ -80,7 +80,7 @@ namespace Stash_Automater_Planner
                         return true;
                     break;
                 case "Rings":
-                    if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
+                    if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 && item.width == 1 && item.height == 1 &&
                         (item.typeLine.Contains(" Ring")))
                         return true;
                     break;

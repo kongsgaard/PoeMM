@@ -10,6 +10,7 @@ namespace Stash_Automater_Planner
         public double currentMouseX = 0;
         public double currentMouseY = 0;
 
+        public int TotalMS = 0;
 
         public List<string> moves = new List<string>();
 
@@ -53,6 +54,7 @@ namespace Stash_Automater_Planner
 
             currentTabIndex = source.type == TabType.Inventory ? target.index : source.index;
 
+            TotalMS += 20;
             moves.Add("MouseMove, " + Math.Round(calcMouseX(source.type, item.x)).ToString() + ", " + Math.Round(calcMouseY(source.type, item.y)).ToString() + ", " + ran.Next(2,10).ToString());
             addSleep(54, 76);
             moves.Add("Send, {ctrl down}{click}{ctrl up}");
@@ -60,7 +62,11 @@ namespace Stash_Automater_Planner
         }
 
         private void addSleep(int minMs, int maxMs) {
-            moves.Add("Sleep, " + ran.Next(minMs, maxMs));
+
+            int sleep = ran.Next(minMs, maxMs);
+            TotalMS += sleep;
+
+            moves.Add("Sleep, " + sleep);
         }
 
         private double calcMouseX(TabType tabType, double xOffset)
