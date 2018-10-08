@@ -256,6 +256,39 @@ namespace Stash_Automater_Planner
             }
             #endregion
 
+            #region Count item classes
+            List<TargetTab> chaosSourceTabTypes = sortedTargetTabs.Where(x => x.chaosRecipeCount > 0).ToList();
+
+            var RegenGroupsForChaosRecipe = chaosSourceTabTypes.SelectMany(x => x.regexGroups).Select(y => y).ToList();
+
+            var StashTabsWithChaosRecipeItems = chaosSourceTabTypes.SelectMany(x => x.targetStashes).Select(y => y).ToList();
+
+            StashTabsWithChaosRecipeItems.AddRange(config.sourceTabs);
+            StashTabsWithChaosRecipeItems.AddRange(config.chaosRecipeTabs);
+
+
+            Console.WriteLine("Item Counts");
+            
+            foreach(string regexGrp in RegenGroupsForChaosRecipe) {
+                int countForCurrent = 0;
+
+                foreach(string tabName in StashTabsWithChaosRecipeItems) {
+
+                    StashTab currentTab = targetTabs.Single(x => x.name == tabName);
+
+                    foreach(Item it in currentTab.items) {
+                        if(RegexGroup.MatchItem(it, regexGrp)) {
+                            countForCurrent++;
+                        }
+                        
+                    }
+
+                }
+
+                Console.WriteLine(regexGrp + ": " + countForCurrent.ToString());
+            }
+
+            #endregion
 
 
             moveOrganizer.finalize();
