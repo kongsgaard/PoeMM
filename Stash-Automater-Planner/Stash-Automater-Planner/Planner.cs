@@ -256,6 +256,8 @@ namespace Stash_Automater_Planner
             }
             #endregion
 
+
+
             moveOrganizer.finalize();
 
             int limit = 0;

@@ -109,6 +109,12 @@ namespace Stash_Automater_Planner
                         (item.typeLine.Contains(" Essence")))
                         return true;
                     break;
+                case "Fragment":
+                    if (
+                        item.typeLine.Contains("Sacrifice") || item.typeLine.Contains("Fragment") || item.typeLine.Contains(" Key") || 
+                        item.typeLine.Contains("Splinter of ") || item.typeLine.Contains("Offering to the goddess") || item.typeLine.Contains("Divine vessel"))
+                        return true;
+                    break;
                 case "Rest":
                     return true;
 
