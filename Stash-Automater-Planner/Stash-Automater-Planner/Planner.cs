@@ -81,7 +81,22 @@ namespace Stash_Automater_Planner
             catch(InvalidOperationException e) {
                 throw new Exception("Error when looking for tab " + currentFetch + " .Either 0 or multiple matches");
             }
-            
+
+            //Initialize chaos recipe stashes
+            string chaosFetch = "";
+            try {
+                foreach (var s in chaosTabs) {
+                    if (chaosRecipeTabs.Where(x => x.name == s).ToList().Count > 0)
+                        continue;
+                    chaosFetch = s;
+                    StashTab tab = stashes.stashTabs.Single(x => x.name == s);
+                    chaosRecipeTabs.Add(tab);
+                }
+            }
+            catch (InvalidOperationException e) {
+                throw new Exception("Error when looking for tab " + chaosFetch + " .Either 0 or multiple matches");
+            }
+
             //Initialize stashes targets
             try {
                 foreach (var s in fetchTabs_target) {
@@ -120,6 +135,13 @@ namespace Stash_Automater_Planner
 
             //Fetch items targets
             foreach (StashTab st in targetTabs) {
+                ApiRequest stash = JsonConvert.DeserializeObject<ApiRequest>(ToolBox.GetStashes(ConfigFile, st.index).ToString());
+
+                st.items = stash.items;
+            }
+
+            //Fetch items targets
+            foreach (StashTab st in chaosRecipeTabs) {
                 ApiRequest stash = JsonConvert.DeserializeObject<ApiRequest>(ToolBox.GetStashes(ConfigFile, st.index).ToString());
 
                 st.items = stash.items;
@@ -230,13 +252,22 @@ namespace Stash_Automater_Planner
 
             #region Setup chaos recipe tabs
 
-
+            /*
             List<TargetTab> chaosSourceTabsSorted = sortedTargetTabs.Where(x => x.chaosRecipeCount > 0).ToList();
 
             foreach (TargetTab target in chaosSourceTabsSorted) {
                 StashTab targetTab = targetTabs.Single(x => target.targetStashes.Contains(x.name));
 
                 Queue<Item> matchesTarg = new Queue<Item>(targetTab.items.Where(x => ToolBox.MatchTargetTabItem(x, target)));
+
+                foreach(StashTab chaosTab in chaosRecipeTabs) {
+
+                    if(chaosTab.items.Count > 0) {
+                        Item it = chaosTab.items.First()
+                    }
+
+                }
+
 
                 //Move item to inventory
                 Item currentItem = null;
@@ -254,6 +285,7 @@ namespace Stash_Automater_Planner
                 }
 
             }
+             */
             #endregion
 
             #region Count item classes
@@ -266,6 +298,7 @@ namespace Stash_Automater_Planner
             StashTabsWithChaosRecipeItems.AddRange(config.sourceTabs);
             StashTabsWithChaosRecipeItems.AddRange(config.chaosRecipeTabs);
 
+            var AllTabs = targetTabs.Union(sourceTabs).Union(chaosRecipeTabs).ToList();
 
             Console.WriteLine("Item Counts");
             
@@ -273,10 +306,10 @@ namespace Stash_Automater_Planner
                 int countForCurrent = 0;
 
                 foreach(string tabName in StashTabsWithChaosRecipeItems) {
-
-                    StashTab currentTab = targetTabs.Single(x => x.name == tabName);
-
-                    foreach(Item it in currentTab.items) {
+                    
+                    StashTab currentTab = AllTabs.Single(x => x.name == tabName);
+                    
+                    foreach (Item it in currentTab.items) {
                         if(RegexGroup.MatchItem(it, regexGrp)) {
                             countForCurrent++;
                         }

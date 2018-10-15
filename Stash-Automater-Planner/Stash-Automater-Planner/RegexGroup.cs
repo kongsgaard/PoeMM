@@ -58,8 +58,10 @@ namespace Stash_Automater_Planner
                         item.typeLine.Contains("Wrap") ||
                         item.typeLine.Contains("Lamellar") ||
                         item.typeLine.Contains("Brigandine") ||
-                        item.typeLine.Contains("Dragonscale") ||
-                        item.typeLine.Contains("Wyrmscale") ||
+                        item.typeLine.Contains("Dragonscale Doublet") ||
+                        item.typeLine.Contains("Full Dragonscale") ||
+                        item.typeLine.Contains("Wyrmscale Doublet") ||
+                        item.typeLine.Contains("Full Wyrmscale") ||
                         item.typeLine.Contains("Full Scale") ||
                         item.typeLine.Contains("Chainmail") ||
                         item.typeLine.Contains("Hauberk") ||

@@ -43,7 +43,7 @@ namespace Stash_Automater_Planner
         public int level { get; set; }
 
         [JsonProperty("experience")]
-        public int experience { get; set; }
+        public long experience { get; set; }
     }
 
     public class ItemTab
@@ -197,5 +197,5 @@ namespace Stash_Automater_Planner
         }
     }
 
-    public enum TabType { NormalStash, PremiumStash, QuadStash, DivinationCardStash, CurrencyStash, EssenceStash, MapStash, Inventory }
+    public enum TabType { NormalStash, PremiumStash, QuadStash, DivinationCardStash, CurrencyStash, EssenceStash, MapStash, Inventory, FragmentStash }
 }
