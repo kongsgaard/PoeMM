@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Stash_Automater_Planner</AssemblyName>
+    <RootNamespace>Stash_Automater_Planner</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Configs\CleanDropTabs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Configs\CleanInventory.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Configs\StashConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="StashConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

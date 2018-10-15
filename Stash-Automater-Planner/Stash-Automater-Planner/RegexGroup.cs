@@ -6,17 +6,17 @@ namespace Stash_Automater_Planner
 {
     public static class RegexGroup
     {
-        public static bool MatchItem(Item item,string regexGroup)
+        public static bool MatchItem(Item item,ItemType regexGroup)
         {
             switch (regexGroup) {
-                case "Boots":
+                case ItemType.Boot:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
                         (item.typeLine.Contains("Boots") || 
                         item.typeLine.Contains("Greaves") || 
                         item.typeLine.Contains("Slippers")))
                         return true;
                     break;
-                case "Helmets":
+                case ItemType.Helmet:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
                         (item.typeLine.Contains("Burgonet") ||
                         item.typeLine.Contains("Helmet") ||
@@ -35,18 +35,18 @@ namespace Stash_Automater_Planner
                         item.typeLine.Contains("Mask")))
                         return true;
                     break;
-                case "Gloves":
+                case ItemType.Glove:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
                         (item.typeLine.Contains("Gauntlets") ||
                         item.typeLine.Contains("Gloves") ||
                         item.typeLine.Contains("Mitts")))
                         return true;
                     break;
-                case "1H":
+                case ItemType.OneHand:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 && item.height == 3 && item.width==1)
                         return true;
                     break;
-                case "Chests":
+                case ItemType.Chest:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
                         (item.typeLine.Contains(" Leather") ||
                         item.typeLine.Contains("Tunic") ||
@@ -76,48 +76,48 @@ namespace Stash_Automater_Planner
                         item.typeLine.Contains("Vest")))
                         return true;
                     break;
-                case "Belts":
+                case ItemType.Belt:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
                         (item.typeLine.Contains(" Belt") || item.typeLine.Contains("Rustic Sash")))
                         return true;
                     break;
-                case "Rings":
+                case ItemType.Ring:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 && item.width == 1 && item.height == 1 &&
                         (item.typeLine.Contains(" Ring")))
                         return true;
                     break;
-                case "Amulets":
+                case ItemType.Amulet:
                     if (item.identified == false && item.frameType == 2 && item.ilvl >= 60 &&
                         (item.typeLine.Contains(" Amulet")))
                         return true;
                     break;
-                case "DivCards":
+                case ItemType.DivCard:
                     if (
                         (item.frameType == 6))
                         return true;
                     break;
-                case "Currency":
+                case ItemType.Currency:
                     if (
                         (item.frameType == 5))
                         return true;
                     break;
-                case "Map":
+                case ItemType.Map:
                     if (
                         (item.typeLine.Contains(" Map")))
                         return true;
                     break;
-                case "Essence":
+                case ItemType.Essence:
                     if (
                         (item.typeLine.Contains(" Essence")))
                         return true;
                     break;
-                case "Fragment":
+                case ItemType.Fragment:
                     if (
                         item.typeLine.Contains("Sacrifice") || item.typeLine.Contains("Fragment") || item.typeLine.Contains(" Key") || 
                         item.typeLine.Contains("Splinter of ") || item.typeLine.Contains("Offering to the goddess") || item.typeLine.Contains("Divine vessel"))
                         return true;
                     break;
-                case "Rest":
+                case ItemType.None:
                     return true;
 
 

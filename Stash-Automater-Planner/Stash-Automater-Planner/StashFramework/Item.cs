@@ -5,8 +5,7 @@ using Newtonsoft.Json;
 
 namespace Stash_Automater_Planner
 {
-    public class Item
-    {
+    public class Item {
         [JsonProperty("abyssJewel")]
         bool abyssJewel { get; set; }
 
@@ -140,6 +139,22 @@ namespace Stash_Automater_Planner
         public int y { get; set; }
 
         public int targetStashIndex { get; set; }
+
+        private ItemType _itemType = ItemType.None;
+
+        public ItemType itemType {
+            get { return _itemType; }
+            set {
+                if (_itemType != ItemType.None)
+                    Console.WriteLine("Overwritten itemtype for: " + typeLine + " || from " + _itemType.ToString() + " to " + value.ToString());
+                else
+                    _itemType = value;
+            }
+        }
+
+        public ItemTab myStashTab = null;
+
+        public ItemTab targetTab = null;
     }
 
     public class Property
@@ -201,4 +216,6 @@ namespace Stash_Automater_Planner
     }
 
     public enum SocketType { Str, Int, Dex, White, Abyss, Default}
+
+    public enum ItemType { None, OneHand, Chest, Helmet, Boot, Glove, Belt, Ring, Amulet, Currency, DivCard, Map, Essence, Fragment }
 }

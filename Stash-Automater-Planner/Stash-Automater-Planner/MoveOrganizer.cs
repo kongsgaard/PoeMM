@@ -13,7 +13,7 @@ namespace Stash_Automater_Planner
         public int TotalMS = 0;
 
         public List<string> moves = new List<string>();
-
+        
         Random ran = new Random();
 
         public MoveOrganizer()
