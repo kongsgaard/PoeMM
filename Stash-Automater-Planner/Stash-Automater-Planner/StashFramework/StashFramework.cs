@@ -27,7 +27,7 @@ namespace Stash_Automater_Planner
             SetItemTypes();
         }
 
-        public StashTab StashByName(string stashName) {
+        public ItemTab StashByName(string stashName) {
 
             if(stashName == "MainInventory") {
                 return inventory;

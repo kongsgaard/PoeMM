@@ -29,16 +29,17 @@ namespace Stash_Automater_Planner {
             
             List<ConfigItemtype> SortedItemTypes = config.configItemTypes.OrderBy(x => x.order).ToList();
 
-            List<StashTab> sourceTabs = new List<StashTab>();
+            List<ItemTab> sourceTabs = new List<ItemTab>();
 
             foreach (string tabName in config.sourceTabs) {
                 sourceTabs.Add(stashFramework.StashByName(tabName));
             }
 
             foreach (ConfigItemtype configItemType in SortedItemTypes) {
-                var ItemsToMove = sourceTabs.SelectMany(x => x.items).Where(y => y.itemType == configItemType.itemtype);
+                var ItemsToMove = new Queue<Item>(sourceTabs.SelectMany(x => x.items).Where(y => y.itemType == configItemType.itemtype));
                 
-                foreach(Item currentItem in ItemsToMove) {
+                Item currentItem = null;
+                while (ItemsToMove.TryDequeue(out currentItem)) {
                     if (ToolBox.MoveItem(currentItem.myStashTab, stashFramework.inventory, currentItem, moveOrganizer)) {
 
                     }
@@ -64,13 +65,15 @@ namespace Stash_Automater_Planner {
             List<ConfigItemtype> SortedItemTypes = config.configItemTypes.OrderBy(x => x.order).ToList();
 
             foreach (ConfigItemtype configItemType in SortedItemTypes) {
-                
-                foreach (Item inventItem in stashFramework.inventory.items) {
+
+                Queue<Item> ItemsToRemove = new Queue<Item>(stashFramework.inventory.items);
+                Item inventItem = null;
+                while(ItemsToRemove.TryDequeue(out inventItem)) { 
                     
                     bool itemMoved = false;
                     foreach (ConfigTargetStash configTargetStash in configItemType.targetStashes.OrderBy(x => x.order)) {
 
-                        StashTab targetStash = stashFramework.StashByName(configTargetStash.stashName);
+                        ItemTab targetStash = stashFramework.StashByName(configTargetStash.stashName);
 
                         bool AllItemTypesOK = true;
                         if (configTargetStash.limit != -1) {
@@ -113,7 +116,8 @@ namespace Stash_Automater_Planner {
                     }
 
                     if (itemMoved == false) {
-                        throw new Exception("Couldn't move item " + inventItem.typeLine + " from stash");
+                        Console.WriteLine("Could not move item " + inventItem.typeLine + ". Terminating after this point");
+                        return;
                     }
                 }
             }
