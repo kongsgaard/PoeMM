@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Stash_Automater_Planner
 {
@@ -10,15 +12,30 @@ namespace Stash_Automater_Planner
         public double currentMouseX = 0;
         public double currentMouseY = 0;
 
-        public int TotalMS = 0;
+        public double StashX = 0;
+        public double StashY = 0;
+        public double VendorX = 0;
+        public double VendorY = 0;
 
+        public double VendorSellDialogX = 0;
+        public double VendorSellDialogY = 0;
+        public double VendorSellButtonX = 0;
+        public double VendorSellButtonY = 0;
+
+        public int TotalMS = 0;
+    
         public List<string> moves = new List<string>();
         
         Random ran = new Random();
 
-        public MoveOrganizer()
+        public MoveOrganizer(string stashConfig)
         {
+            string json = File.ReadAllText(Directory.GetCurrentDirectory() + "\\" + stashConfig);
+            JObject jObject = JObject.Parse(json);
+            var config = JsonConvert.DeserializeObject<StashConfig>(jObject.ToString());
 
+            StashX = config.stashX; StashY = config.stashY;
+            VendorX = config.vendorX; VendorY = config.vendorY;
         }
 
         public void finalize()
@@ -26,33 +43,68 @@ namespace Stash_Automater_Planner
             moves.Add("ExitApp");
             moves.Add("");
             moves.Add("");
-            moves.Add("Esc::");
+            moves.Add("F11::");
             moves.Add("send, {ctrl up}{right up}{left up}");
             moves.Add("ExitApp");
             moves.Add("Return");
 
         }
 
+        public void SellToVendor(List<Item> ItemsToSell, ItemTab inventory, ItemTab vendor) {
+
+            //Move away from stash to vendor. Click sell
+            moves.Add("send, {ESC}");
+            addSleep(20, 100);
+            moves.Add("send, {ESC}");
+            addSleep(20, 30);
+            moves.Add("MouseMove, " + VendorX.ToString() + ", " + VendorY.ToString() + ", 2");
+            addSleep(20, 30);
+            moves.Add("Send, {click}");
+
+
+
+
+            foreach (Item i in ItemsToSell) {
+                if(!ToolBox.MoveItem(inventory, vendor, i, this))
+                {
+                    throw new Exception("Could not give item to vendor.");
+                }
+            }
+
+            //Add chaos to inventory
+
+
+            //Close vendor shop
+
+            //Move back to stash
+
+            throw new NotImplementedException();
+        }
+
         public void MoveItem(ItemTab source, ItemTab target, Item item)
         {
-            //Calculate difference in tabs, i.e how much we need to move
-            int tabDiff = (source.type == TabType.Inventory ? target.index : source.index) - currentTabIndex;
+            if(!(target.type == TabType.Vendor)) {
+                //Calculate difference in tabs, i.e how much we need to move
+                int tabDiff = (source.type == TabType.Inventory ? target.index : source.index) - currentTabIndex;
 
-            if(tabDiff > 0) {
-                for(int i = 0; i < tabDiff; i++) {
-                    moves.Add("Send, {right down}{right up}");
-                    addSleep(174, 243);
-                    
+                if (tabDiff > 0) {
+                    for (int i = 0; i < tabDiff; i++) {
+                        moves.Add("Send, {right down}{right up}");
+                        addSleep(174, 243);
+
+                    }
                 }
-            }
-            else if(tabDiff < 0) {
-                for (int i = 0; i < -tabDiff; i++) {
-                    moves.Add("Send, {left down}{left up}");
-                    addSleep(163, 259);
+                else if (tabDiff < 0) {
+                    for (int i = 0; i < -tabDiff; i++) {
+                        moves.Add("Send, {left down}{left up}");
+                        addSleep(163, 259);
+                    }
                 }
+
+                currentTabIndex = source.type == TabType.Inventory ? target.index : source.index;
+
             }
 
-            currentTabIndex = source.type == TabType.Inventory ? target.index : source.index;
 
             TotalMS += 20;
             moves.Add("MouseMove, " + Math.Round(calcMouseX(source.type, item.x)).ToString() + ", " + Math.Round(calcMouseY(source.type, item.y)).ToString() + ", " + ran.Next(2,10).ToString());

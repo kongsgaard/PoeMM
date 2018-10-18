@@ -21,7 +21,7 @@ namespace Stash_Automater_Planner
 
             StashFramework stashFramework = new StashFramework("Configs\\StashConfig.json", sortConfigs);
 
-            MoveOrganizer organizer = new MoveOrganizer();
+            MoveOrganizer organizer = new MoveOrganizer("Configs\\StashConfig.json");
 
             Planner p = new Planner(organizer, stashFramework);
 

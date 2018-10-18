@@ -20,6 +20,30 @@ namespace Stash_Automater_Planner
         [JsonProperty("league")]
         public string sourceTabs { get; set; }
 
+        [JsonProperty("StashX")]
+        public int stashX { get; set; }
+
+        [JsonProperty("StashY")]
+        public int stashY { get; set; }
+
+        [JsonProperty("VendorX")]
+        public int vendorX { get; set; }
+
+        [JsonProperty("VendorY")]
+        public int vendorY { get; set; }
+
+        [JsonProperty("VendorSellDialogX")]
+        public int VendorSellDialogX { get; set; }
+
+        [JsonProperty("VendorSellDialogY")]
+        public int VendorSellDialogY { get; set; }
+
+        [JsonProperty("VendorSellButtonX")]
+        public int VendorSellButtonX { get; set; }
+
+        [JsonProperty("VendorSellButtonY")]
+        public int VendorSellButtonY { get; set; }
+        
     }
 
     public class SortConfig {
@@ -54,6 +78,30 @@ namespace Stash_Automater_Planner
 
         [JsonProperty("Limit")]
         public int limit { get; set; }
+    }
+
+    public class ChaosConfig {
+        [JsonProperty("SourceTabs")]
+        public List<string> sourceTabs { get; set; }
+
+        [JsonProperty("ResultToTab")]
+        public string resultToTab { get; set; }
+
+        [JsonProperty("CompleteRegal")]
+        public bool completeRegal { get; set; }
+
+
+        [JsonProperty("ItemBuckets")]
+        public List<ItemBucket> buckets { get; set; }
+        
+    }
+
+    public class ItemBucket {
+        [JsonProperty("ItemType")]
+        public ItemType itemtype { get; set; }
+
+        [JsonProperty("Count")]
+        public int count { get; set; }
     }
 
 }

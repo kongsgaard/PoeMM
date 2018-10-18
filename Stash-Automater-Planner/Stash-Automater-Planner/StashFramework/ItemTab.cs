@@ -70,7 +70,7 @@ namespace Stash_Automater_Planner
 
         public bool AddItem(Item item)
         {
-            if(!(type == TabType.NormalStash || type == TabType.PremiumStash || type == TabType.QuadStash || type == TabType.Inventory)) {
+            if(!(type == TabType.NormalStash || type == TabType.PremiumStash || type == TabType.QuadStash || type == TabType.Inventory || type == TabType.Vendor)) {
                 return true;
             }
 
@@ -105,6 +105,9 @@ namespace Stash_Automater_Planner
 
                             if(type == TabType.Inventory) {
                                 item.inventoryId = "MainInventory";
+                            }
+                            else if (type == TabType.Vendor) {
+                                item.inventoryId = "Vendor";
                             }
                             else {
                                 item.inventoryId = "Stash" + (1 + index).ToString();
@@ -164,6 +167,9 @@ namespace Stash_Automater_Planner
                     return true;
                 }
             }
+            else if (type == TabType.Vendor) {
+                throw new NotImplementedException("Cant remove item from vendor window");
+            }
             else return false;
 
 
@@ -181,7 +187,7 @@ namespace Stash_Automater_Planner
             else if (type == TabType.QuadStash) {
                 itemGrid = new bool[24, 24];
             }
-            else if (type == TabType.Inventory) {
+            else if (type == TabType.Inventory || type == TabType.Vendor) {
                 itemGrid = new bool[5, 12];
             }
             else
@@ -197,5 +203,5 @@ namespace Stash_Automater_Planner
         }
     }
 
-    public enum TabType { NormalStash, PremiumStash, QuadStash, DivinationCardStash, CurrencyStash, EssenceStash, MapStash, Inventory, FragmentStash }
+    public enum TabType { NormalStash, PremiumStash, QuadStash, DivinationCardStash, CurrencyStash, EssenceStash, MapStash, Inventory, FragmentStash, Vendor }
 }

@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Configs\ChaosRecipe.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Configs\StashConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
