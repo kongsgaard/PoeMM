@@ -50,6 +50,7 @@ namespace Stash_Automater_Planner {
 
                         }
                         else {
+                            EmptyInventory();
                             throw new Exception("Couldn't fit item after inventory was emptied");
                         }
                     }
