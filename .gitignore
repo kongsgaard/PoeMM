@@ -6,6 +6,8 @@
 # Configuration file
 Stash-Indexer-netcore/Stash-Indexer-netcore/AppSettings.json
 Stash-Automater-Planner/Stash-Automater-Planner/StashConfig.json
+Stash-Automater-Planner/Stash-Automater-Planner/Configs/*
+
 
 # User-specific files
 *.suo
@@ -291,4 +293,4 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-*/Configs/*
+*/Configs
