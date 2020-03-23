@@ -197,5 +197,5 @@ namespace Stash_Automater_Planner
         }
     }
 
-    public enum TabType { NormalStash, PremiumStash, QuadStash, DivinationCardStash, CurrencyStash, EssenceStash, MapStash, Inventory, FragmentStash }
+    public enum TabType { NormalStash, PremiumStash, QuadStash, DivinationCardStash, CurrencyStash, EssenceStash, MapStash, Inventory, FragmentStash, UniqueStash }
 }
