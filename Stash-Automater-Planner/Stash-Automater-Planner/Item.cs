@@ -26,7 +26,7 @@ namespace Stash_Automater_Planner
         List<string> craftedMods { get; set; }
 
         [JsonProperty("descrText")]
-        string description { get; set; }
+        public string description { get; set; }
 
         [JsonProperty("dubplicated")]
         bool dubplicated { get; set; }
@@ -62,7 +62,7 @@ namespace Stash_Automater_Planner
         public int ilvl { get; set; }
 
         [JsonProperty("implicitMods")]
-        List<string> implicitMods { get; set; }
+        public List<string> implicitMods { get; set; }
 
         [JsonProperty("inventoryId")]
         public string inventoryId { get; set; }

@@ -55,7 +55,7 @@ namespace Stash_Automater_Planner
                         item.typeLine.Contains("Vestment") ||
                         item.typeLine.Contains("Regalia") ||
                         item.typeLine.Contains("Silks") ||
-                        item.typeLine.Contains("Wrap") ||
+                        item.typeLine.Contains(" Wrap") ||
                         item.typeLine.Contains("Lamellar") ||
                         item.typeLine.Contains("Brigandine") ||
                         item.typeLine.Contains("Dragonscale Doublet") ||
@@ -108,15 +108,49 @@ namespace Stash_Automater_Planner
                     break;
                 case "Essence":
                     if (
-                        (item.typeLine.Contains(" Essence")))
+                        (item.typeLine.Contains(" Essence")) || (item.typeLine.Contains("Remnant of Corruption")))
+                        return true;
+                    break;
+                case "DeliriumCurrency":
+                    if (
+                        (item.typeLine.Contains(" Delirium Orb")) || item.typeLine.Contains("Simulacrum Splinter"))
                         return true;
                     break;
                 case "Fragment":
                     if (
-                        item.typeLine.Contains("Sacrifice") || item.typeLine.Contains("Fragment") || item.typeLine.Contains(" Key") || 
+                        item.typeLine.Contains("Sacrifice") || item.typeLine.Contains(" Key") || item.typeLine.Contains("Timeless") ||
                         item.typeLine.Contains("Splinter of ") || item.typeLine.Contains("Offering to the goddess") || item.typeLine.Contains("Divine vessel"))
                         return true;
                     break;
+                case "Fossil":
+                    if (
+                        item.typeLine.Contains("Fossil"))
+                        return true;
+                    break;
+                case "Catalyst":
+                    if (
+                        item.typeLine.Contains("Catalyst"))
+                        return true;
+                    break;
+                case "Oil":
+                    if(item.description != null) {
+                        if (item.description.Contains("Cassia"))
+                            return true;
+                    }
+                    break;
+                case "BlightedMaps":
+                    if (item.implicitMods != null) {
+                        if ( item.implicitMods.Exists(x => x.Contains("Area is infested with Fungal Growths")) )
+                        return true;
+                    }
+                    break;
+                case "Incubator":
+                    if (
+                        item.typeLine.Contains("Incubator"))
+                        return true;
+                    break;
+
+
                 case "Rest":
                     return true;
 
