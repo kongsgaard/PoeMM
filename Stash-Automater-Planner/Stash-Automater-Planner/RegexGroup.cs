@@ -124,7 +124,7 @@ namespace Stash_Automater_Planner
                     break;
                 case "Fossil":
                     if (
-                        item.typeLine.Contains("Fossil"))
+                        item.typeLine.Contains("Fossil") || item.typeLine.Contains("Resonator"))
                         return true;
                     break;
                 case "Catalyst":
