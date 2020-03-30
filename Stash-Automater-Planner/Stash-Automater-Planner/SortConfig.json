@@ -1,0 +1,150 @@
+﻿{
+  "sortConfigs": [
+    {
+      "name": "cleanDropTabs",
+      "inventoryToStash": "D",
+      "targetTabs": [
+        {
+          "name": "Boots",
+          "targetStash": [ "Bo" ],
+          "regexGroups": [ "Boots" ],
+          "order": 5,
+          "chaosRecipeCount": 24
+        },
+        {
+          "name": "Helmets",
+          "targetStash": [ "He" ],
+          "regexGroups": [ "Helmets" ],
+          "order": 3,
+          "chaosRecipeCount": 24
+        },
+        {
+          "name": "Gloves",
+          "targetStash": [ "Gl" ],
+          "regexGroups": [ "Gloves" ],
+          "order": 4,
+          "chaosRecipeCount": 24
+        },
+        {
+          "name": "1Hand",
+          "targetStash": [ "1H" ],
+          "regexGroups": [ "1H" ],
+          "order": 1,
+          "chaosRecipeCount": 24
+        },
+        {
+          "name": "Belts",
+          "targetStash": [ "Be" ],
+          "regexGroups": [ "Belts" ],
+          "order": 6,
+          "chaosRecipeCount": 24
+        },
+        {
+          "name": "Rings",
+          "targetStash": [ "Ri" ],
+          "regexGroups": [ "Rings" ],
+          "order": 7,
+          "chaosRecipeCount": 48
+        },
+        {
+          "name": "Amulets",
+          "targetStash": [ "Am" ],
+          "regexGroups": [ "Amulets" ],
+          "order": 8,
+          "chaosRecipeCount": 24
+        },
+        {
+          "name": "Chests",
+          "targetStash": [ "Ch" ],
+          "regexGroups": [ "Chests" ],
+          "order": 2,
+          "chaosRecipeCount": 16
+        },
+        {
+          "name": "DivCards",
+          "targetStash": [ "Di" ],
+          "regexGroups": [ "DivCards" ],
+          "order": 12,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Currency",
+          "targetStash": [ "C" ],
+          "regexGroups": [ "Currency" ],
+          "order": 11,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Map",
+          "targetStash": [ "M" ],
+          "regexGroups": [ "Map" ],
+          "order": 9,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Essence",
+          "targetStash": [ "E" ],
+          "regexGroups": [ "Essence" ],
+          "order": 10,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Fragments",
+          "targetStash": [ "F" ],
+          "regexGroups": [ "Fragment" ],
+          "order": 9,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "DeliriumCurrency",
+          "targetStash": [ "C" ],
+          "regexGroups": [ "DeliriumCurrency" ],
+          "order": 8,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Fossil",
+          "targetStash": [ "Fo" ],
+          "regexGroups": [ "Fossil" ],
+          "order": 9,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Catalyst",
+          "targetStash": [ "Fo" ],
+          "regexGroups": [ "Catalyst" ],
+          "order": 9,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Oil",
+          "targetStash": [ "Fo" ],
+          "regexGroups": [ "Oil" ],
+          "order": 9,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "BlightedMaps",
+          "targetStash": [ "Fo" ],
+          "regexGroups": [ "BlightedMaps" ],
+          "order": 8,
+          "chaosRecipeCount": -1
+        },
+        {
+          "name": "Incubator",
+          "targetStash": [ "Fo" ],
+          "regexGroups": [ "Incubator" ],
+          "order": 7,
+          "chaosRecipeCount": -1
+        }
+
+      ],
+      "sourceTabs": [
+        "D2","Je","D"
+      ],
+      "chaosRecipeTabs": [
+        "Reci"
+      ]
+    }
+  ]
+}
